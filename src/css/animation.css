@@ -1,0 +1,38 @@
+@keyframes rocket{
+	from{transform: translateX(-300px) translateY(300px);}
+	to{}
+}
+@keyframes logo{
+	from{transform: translateX(-50px) translateY(20px);opacity:0;}
+	to{opacity:1;}
+}
+@keyframes thanks{
+	from{transform: translateY(20px);opacity: 0;}
+	to{opacity: 1;}
+}
+
+@keyframes arrow{
+	from{transform: translateY(30px);opacity: 0;}
+	to{opacity: 1;}
+}
+
+@keyframes rocketout{
+	from{}
+	to{transform: translateY(-300px) translateX(300px);opacity: 0;}
+}
+@keyframes logoout{
+	from{opacity: 1;}
+	to{transform: translateX(50px) translateY(-20px);opacity: 0;}
+}
+@keyframes thanksout{
+	from{opacity: 1;}
+	to{transform: translateY(-50px);opacity: 0;}
+}
+@keyframes startout{
+	from{opacity: 1;}
+	to{opacity: 0;}
+}
+@keyframes musicplay{
+	from{transform: rotate(0);}
+	to{transform: rotate(360deg);}
+}
