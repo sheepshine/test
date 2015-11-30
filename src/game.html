@@ -69,13 +69,56 @@
 			]
 			onload_1({canvasid:"game",objId:"minoner1",miner:numRadom,width:sizeArr[numRadom-1].w,height:sizeArr[numRadom-1].h});
 			setTimeout(function(){
-				monMove("game");
+				var monM=new monMove({objid:"minoner1"});
 			},200)
 			
 		}
 		gameInit();
-		function monMove(idCanvas){
-			jc('#minoner1').animate({x:500,y:500},2000);
+		function monMove(option){
+			var _that=this;
+			_that.objid=option.objid;
+			_that.positionMinX=50;
+			_that.positionMinY=50;
+			_that.positionMaxX=document.body.clientWidth-100;
+			_that.positionMaxY=document.body.clientHeight-100;
+			var fristPosition=parseInt(Math.random()*3+1);
+			switch (fristPosition){
+				case 1:
+					_that.positionY=_that.positionMinY;
+					_that.positionX=parseInt(Math.random()*_that.positionMaxX+_that.positionMinX);
+					break;
+				case 2:
+					_that.positionX=0;
+					_that.positionY=parseInt(Math.random()*_that.positionMaxY+_that.positionMinY);
+					break;
+				case 3:
+					_that.positionX=parseInt(Math.random()*_that.positionMaxX+_that.positionMinX);
+					_that.positionY=_that.positionMaxY-50;
+					break;
+				case 4:
+					_that.positionX=_that.positionMaxX;
+					_that.positionY=parseInt(Math.random()*_that.positionMaxY+_that.positionMinY);
+					break;
+			}
+			console.log(fristPosition);
+			console.log(_that.positionX);
+			console.log(_that.positionY);
+			setInterval(function(){
+				_that.run();
+			},20)
+		}
+		monMove.prototype.run=function(){
+			var _that=this;
+			if(_that.positionY==_that.positionMinY&&_that.positionX>=0){
+				_that.positionX=_that.positionX-5;
+			}else if(_that.positionX<=0&&_that.positionY<=(_that.positionMaxY-50)){
+				_that.positionY=_that.positionY+5;
+			}else if(_that.positionY>=(_that.positionMaxY-50)&&_that.positionX<=_that.positionMaxX){
+				_that.positionX=_that.positionX+5;
+			}else if(_that.positionX>=_that.positionMaxX&&_that.positionY>=_that.positionMinY){
+				_that.positionY=_that.positionY-5;
+			}
+			jc('#'+this.objid).animate({x:_that.positionX,y:_that.positionY},1);
 		}
 	</script>
 </html>
