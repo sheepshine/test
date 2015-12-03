@@ -48,7 +48,7 @@
 		})
 		
 		//怪物数量
-		var monNum=100;
+		var monNum=10;
 		function gameInit(){
 			var canvas = document.getElementById("game");
 			canvas.width=document.body.clientWidth;
@@ -90,8 +90,12 @@
 			_that.positionMinY=50;
 			_that.positionMaxX=document.body.clientWidth-100;
 			_that.positionMaxY=document.body.clientHeight-100;
+			_that.positionx=0;
+			_that.positiony=0
 			_that.R=300;
-			_that.ang=300;
+			_that.ang=200;
+			_that.timer=null;
+			_that.bindEvent();
 			var fristPosition=parseInt(Math.random()*3+1);
 			switch (fristPosition){
 				case 1:
@@ -111,7 +115,7 @@
 					_that.positionY=parseInt(Math.random()*_that.positionMaxY+_that.positionMinY);
 					break;
 			}
-			setInterval(function(){
+			_that.timer=setInterval(function(){
 				_that.run();
 			},20)
 		}
@@ -129,8 +133,62 @@
 			}
 			_that.positionx=_that.positionX-_that.R*Math.cos(_that.ang*Math.PI/180);
 			_that.positiony=_that.positionY-_that.R*Math.sin(_that.ang*Math.PI/180);
-			console.log(_that.R);
 			jc('#'+this.objid).animate({x:_that.positionx,y:_that.positiony},1);
+		}
+		monMove.prototype.stop=function(){
+			this.shape=[];
+			var _that=this;
+			var monNum=findNum(jc('#'+_that.objid)._img.src)[0];
+		    //大小
+			var shapeArr=[
+				{w:108,h:138},
+				{w:92,h:107},
+				{w:103,h:94},
+				{w:146,h:83}
+			]
+			switch (monNum){
+				case 1:
+					_that.shape.width=shapeArr[0].w;
+					_that.shape.height=shapeArr[0].h;
+					break;
+				case 2:
+					_that.shape.width=shapeArr[1].w;
+					_that.shape.height=shapeArr[1].h;
+					break;
+				case 3:
+					_that.shape.width=shapeArr[2].w;
+					_that.shape.height=shapeArr[2].h;
+					break;
+				case 4:
+					_that.shape.width=shapeArr[3].w;
+					_that.shape.height=shapeArr[3].h;
+					break;
+			}
+			var img=new Image();
+	        img.src="images/miner"+ monNum + monNum+".png";
+	        img.onload=function(){
+		        jc.start('game',true);
+		        jc.image(img,_that.positionx,_that.positiony,_that.shape.width,_that.shape.height)
+		        jc.start('game');
+		    }
+		}
+		var test1=findNum('asdasd1');
+		function findNum(obj){
+			return obj.match(/\d+/g);
+		}
+		monMove.prototype.bindEvent=function(){
+				var _that=this;
+				document.addEventListener('touchstart',function(ev){
+					var ev=ev||event;
+					var touch=ev.changedTouches[0];
+					var touchX=touch.pageX;
+					var touchY=touch.pageY;
+					if(touchX>_that.positionx&&touchX<_that.positionx+116&&touchY>_that.positiony&&touchY<_that.positiony+116){
+						_that.stop();
+						clearInterval(_that.timer);
+						jc('#'+_that.objid).del();
+					}
+				})
 		}
 	</script>
 </html>
